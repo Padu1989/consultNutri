@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +23,7 @@ import br.com.paulomoreira.consult.controller.dto.ConsultaDto;
 import br.com.paulomoreira.consult.controller.dto.Resposta;
 import br.com.paulomoreira.consult.models.Consulta;
 import br.com.paulomoreira.consult.service.ConsultaService;
+import javassist.NotFoundException;
 
 @RestController
 @RequestMapping("/paciente")
@@ -34,29 +34,22 @@ public class ConsultaController {
 
 	@PostMapping("/{id}/consulta")
 	public ResponseEntity<Resposta<ConsultaDto>> cadastrarConsulta(@PathVariable Long id,
-			@RequestBody @Valid ConsultaDto consultaDto) {
-		try {
+			@RequestBody @Valid ConsultaDto consultaDto) throws NotFoundException{
 		Resposta<ConsultaDto> resposta = new Resposta<>();
 		consultaService.cadastrarConsulta(consultaDto, id);
 		resposta.setStatusCode(HttpStatus.CREATED).setMensagem("Consulta adicionada com sucesso.")
 		.setResultado(consultaDto);
 		return ResponseEntity.created(null).body(resposta);
-		} catch (NullPointerException e) {
-			throw new NullPointerException("O Id pesquisado não foi encontado.");
-		}
+		
 	}
-
+	
 	@GetMapping("/{id}/consulta")
-	public ResponseEntity<Resposta<List<Consulta>>> detalharPaciente(@PathVariable Long id) {
-		try {
-			Resposta<List<Consulta>> resposta = new Resposta<>();
+	public ResponseEntity<Resposta<List<Consulta>>> detalharPaciente(@PathVariable Long id) throws NotFoundException {
+		Resposta<List<Consulta>> resposta = new Resposta<>();
 		List<Consulta> consultas = consultaService.detalharConsultasPorPaciente(id);
 			resposta.setStatusCode(HttpStatus.OK).setMensagem("Consulta realizada com sucesso!")
 					.setResultado(consultas);
 			return ResponseEntity.ok(resposta);
-			}catch (NullPointerException e) {
-				throw new NullPointerException("O Id pesquisado não foi encontrado.");
-			}
 		}
 	
 	@PutMapping("/consulta/{id}")

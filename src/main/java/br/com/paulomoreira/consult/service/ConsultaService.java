@@ -12,6 +12,7 @@ import br.com.paulomoreira.consult.models.Consulta;
 import br.com.paulomoreira.consult.models.Paciente;
 import br.com.paulomoreira.consult.repository.ConsultaRepository;
 import br.com.paulomoreira.consult.repository.PacienteRepository;
+import javassist.NotFoundException;
 
 @Service
 public class ConsultaService {
@@ -22,9 +23,9 @@ public class ConsultaService {
 	@Autowired
 	PacienteRepository pacienteRepository;
 
-	public ConsultaDto cadastrarConsulta(ConsultaDto consultaDto, Long id) {
+	public ConsultaDto cadastrarConsulta(ConsultaDto consultaDto, Long id) throws NotFoundException {
 		Consulta consulta = consultaDto.converterConsulta(consultaDto);
-		Paciente paciente = pacienteRepository.findById(id).orElse(null);
+		Paciente paciente = pacienteRepository.findById(id).orElseThrow(() -> new NotFoundException("Id não encontrado."));
 		consulta.setPaciente(paciente);
 		paciente.getConsultas().add(consulta);
 		consultaRepository.save(consulta);
@@ -33,9 +34,9 @@ public class ConsultaService {
 		return consultaDto;
 	}
 
-	public List<Consulta> detalharConsultasPorPaciente(Long id) {
+	public List<Consulta> detalharConsultasPorPaciente(Long id) throws NotFoundException{
 	
-			Paciente paciente = pacienteRepository.findById(id).orElse(null);
+			Paciente paciente = pacienteRepository.findById(id).orElseThrow(() -> new NotFoundException("Id não encontrado"));
 
 			List<Consulta> consultas = paciente.getConsultas();
 			return (consultas);

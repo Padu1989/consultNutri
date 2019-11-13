@@ -2,6 +2,7 @@ package br.com.paulomoreira.consult.service;
 
 import java.util.List;
 
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -9,10 +10,13 @@ import org.springframework.stereotype.Service;
 import br.com.paulomoreira.consult.controller.dto.PacienteDto;
 import br.com.paulomoreira.consult.models.Paciente;
 import br.com.paulomoreira.consult.repository.PacienteRepository;
+import javassist.NotFoundException;
 
 @Service
 public class PacienteService {
-
+	
+	private static String mensagemNotFound = "Id Not Found.";
+	
 	@Autowired
 	PacienteRepository pacienteRepository;
 
@@ -29,15 +33,15 @@ public class PacienteService {
 		return pacienteRepository.findAll();
 	}
 
-	public Paciente detalharPaciente(Long id) {
-		Paciente paciente = pacienteRepository.findById(id).orElse(null);
+	public Paciente detalharPaciente(Long id) throws NotFoundException {
+		Paciente paciente = pacienteRepository.findById(id).orElseThrow(() -> new NotFoundException(mensagemNotFound));
 			System.out.println("O Paciente " + id + " foi listado.");
 			return paciente;
 		}
 
 
-	public ResponseEntity<Paciente> deletarPaciente(Long id) {
-		Paciente paciente = pacienteRepository.findById(id).orElse(null);
+	public ResponseEntity<Paciente> deletarPaciente(Long id) throws NotFoundException {
+		Paciente paciente = pacienteRepository.findById(id).orElseThrow(() -> new NotFoundException(mensagemNotFound));
 		if (paciente == null) {
 			return ResponseEntity.notFound().build();
 		} else {
@@ -47,8 +51,8 @@ public class PacienteService {
 		}
 	}
 
-	public ResponseEntity<Paciente> atualizarPaciente(Long id, PacienteDto pacienteDto) {
-		Paciente paciente = pacienteRepository.findById(id).orElse(null);
+	public ResponseEntity<Paciente> atualizarPaciente(Long id, PacienteDto pacienteDto) throws NotFoundException {
+		Paciente paciente = pacienteRepository.findById(id).orElseThrow(() -> new NotFoundException(mensagemNotFound));
 		paciente.setNome(pacienteDto.getNome());
 		paciente.setCpf(pacienteDto.getCpf());
 		paciente.setIdade(pacienteDto.getIdade());
@@ -59,8 +63,8 @@ public class PacienteService {
 
 	}
 
-	public ResponseEntity<Paciente> atualizarParcialPaciente(Long id, PacienteDto pacienteDto) {
-		Paciente paciente = pacienteRepository.findById(id).orElse(null);
+	public ResponseEntity<Paciente> atualizarParcialPaciente(Long id, PacienteDto pacienteDto) throws NotFoundException{
+		Paciente paciente = pacienteRepository.findById(id).orElseThrow(() -> new NotFoundException(mensagemNotFound));
 		if(pacienteDto.getNome() == null) {} else {paciente.setNome(pacienteDto.getNome());};
  		if(pacienteDto.getCpf() == null) {} else {paciente.setCpf(pacienteDto.getCpf());};
  		if(pacienteDto.getIdade() == null) {} else {paciente.setIdade(pacienteDto.getIdade());};

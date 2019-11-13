@@ -55,7 +55,7 @@ public class ConsultaController {
 	@PutMapping("/consulta/{id}")
 	@Transactional
 	public ResponseEntity<Resposta<Consulta>> atualizarConsulta(@PathVariable Long id,
-			@RequestBody @Valid Consulta consultaAtualizada) {
+			@RequestBody @Valid Consulta consultaAtualizada) throws NotFoundException {
 		Resposta<Consulta> resposta = new Resposta<>();
 		try {
 		Consulta consulta = consultaService.atualizarConsulta(id, consultaAtualizada);
@@ -69,7 +69,7 @@ public class ConsultaController {
 	@PatchMapping("/consulta/{id}")
 	@Transactional
 	public ResponseEntity<Resposta<Consulta>> atualizarParcialConsulta(@PathVariable Long id,
-			@RequestBody @Valid Consulta consultaAtualizada) {
+			@RequestBody @Valid Consulta consultaAtualizada) throws NotFoundException {
 		try {
 		Resposta<Consulta> resposta = new Resposta<>();
 		Consulta consulta = consultaService.atualizarParcialConsulta(id, consultaAtualizada);

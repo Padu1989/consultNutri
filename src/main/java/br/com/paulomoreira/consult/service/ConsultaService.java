@@ -23,9 +23,11 @@ public class ConsultaService {
 	@Autowired
 	PacienteRepository pacienteRepository;
 
+	private static String mensagemNotFound = "Id Not Found.";
+	
 	public ConsultaDto cadastrarConsulta(ConsultaDto consultaDto, Long id) throws NotFoundException {
 		Consulta consulta = consultaDto.converterConsulta(consultaDto);
-		Paciente paciente = pacienteRepository.findById(id).orElseThrow(() -> new NotFoundException("Id não encontrado."));
+		Paciente paciente = pacienteRepository.findById(id).orElseThrow(() -> new NotFoundException(mensagemNotFound));
 		consulta.setPaciente(paciente);
 		paciente.getConsultas().add(consulta);
 		consultaRepository.save(consulta);
@@ -36,20 +38,20 @@ public class ConsultaService {
 
 	public List<Consulta> detalharConsultasPorPaciente(Long id) throws NotFoundException{
 	
-			Paciente paciente = pacienteRepository.findById(id).orElseThrow(() -> new NotFoundException("Id não encontrado"));
+			Paciente paciente = pacienteRepository.findById(id).orElseThrow(() -> new NotFoundException(mensagemNotFound));
 
 			List<Consulta> consultas = paciente.getConsultas();
 			return (consultas);
 	}
 
-	public Consulta atualizarConsulta(Long id, Consulta consultaAtualizada) {
-		Consulta consultaEncontrada = consultaRepository.findById(id).orElse(null);
+	public Consulta atualizarConsulta(Long id, Consulta consultaAtualizada) throws NotFoundException {
+		Consulta consultaEncontrada = consultaRepository.findById(id).orElseThrow(() -> new NotFoundException(mensagemNotFound));
 		Consulta consulta = consultaAtualizada.atualizar(consultaEncontrada);
 		return (consulta);
 	}
 
-	public Consulta atualizarParcialConsulta(Long id, @Valid Consulta consultaAtualizada) {
-		Consulta consulta = consultaRepository.findById(id).orElse(null);
+	public Consulta atualizarParcialConsulta(Long id, @Valid Consulta consultaAtualizada) throws NotFoundException{
+		Consulta consulta = consultaRepository.findById(id).orElseThrow(() -> new NotFoundException(mensagemNotFound));
 		consulta.setMedico(consultaAtualizada.getMedico());
 		consulta.setReceita(consultaAtualizada.getReceita());
 		consulta.setDescricao(consultaAtualizada.getDescricao());

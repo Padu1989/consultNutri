@@ -20,52 +20,51 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.paulomoreira.consult.controller.dto.PacienteDto;
 import br.com.paulomoreira.consult.models.Paciente;
 import br.com.paulomoreira.consult.service.PacienteService;
+import javassist.NotFoundException;
 
 @RestController
 @RequestMapping("/paciente")
 public class PacienteController {
-	
-	
+
 	@Autowired
 	PacienteService pacienteService;
-	
+
 	@PostMapping
-	 public ResponseEntity<Paciente> cadastrarPaciente (@RequestBody @Valid PacienteDto pacienteDto){
+	public ResponseEntity<Paciente> cadastrarPaciente(@RequestBody @Valid PacienteDto pacienteDto) {
 		Paciente paciente = pacienteService.cadastarPaciente(pacienteDto);
 		return ResponseEntity.created(null).body(paciente);
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<Paciente> detalharPaciente(@PathVariable Long id)
-	{
+	public ResponseEntity<Paciente> detalharPaciente(@PathVariable Long id) throws NotFoundException {
 		Paciente paciente = pacienteService.detalharPaciente(id);
 		if (paciente == null) {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(paciente);
 	}
-	
+
 	@GetMapping
 	public List<Paciente> buscarPacientes() {
 		return pacienteService.buscarPacientes();
 	}
-	
+
 	@PatchMapping("{id}")
-	public ResponseEntity<Paciente> atualizarParcialPaciente(@RequestBody @Valid PacienteDto pacienteDto, 
-			@PathVariable Long id){
+	public ResponseEntity<Paciente> atualizarParcialPaciente(@RequestBody @Valid PacienteDto pacienteDto,
+			@PathVariable Long id) throws NotFoundException {
 		return pacienteService.atualizarParcialPaciente(id, pacienteDto);
 	}
-	
+
 	@PutMapping("{id}")
 	@Transactional
-	public ResponseEntity<Paciente> atualizarPaciente(@PathVariable Long id, 
-			@RequestBody PacienteDto pacienteDto){
+	public ResponseEntity<Paciente> atualizarPaciente(@PathVariable Long id, @RequestBody PacienteDto pacienteDto)
+			throws NotFoundException {
 		return pacienteService.atualizarPaciente(id, pacienteDto);
 	}
-	
+
 	@DeleteMapping("{id}")
-	public ResponseEntity<Paciente> deletarPaciente(@PathVariable Long id) {
+	public ResponseEntity<Paciente> deletarPaciente(@PathVariable Long id) throws NotFoundException {
 		return pacienteService.deletarPaciente(id);
-		
+
 	}
 }

@@ -40,7 +40,6 @@ public class ConsultaController {
 		resposta.setStatusCode(HttpStatus.CREATED).setMensagem("Consulta adicionada com sucesso.")
 		.setResultado(consultaDto);
 		return ResponseEntity.created(null).body(resposta);
-		
 	}
 	
 	@GetMapping("/{id}/consulta")

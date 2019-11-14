@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import br.com.paulomoreira.consult.controller.dto.MedicoDto;
+
 @Entity
 @Table(name = "MEDICO")
 public class Medico {
@@ -13,8 +15,11 @@ public class Medico {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
 	private String nome;
+	
 	private String registro;
+	
 	private String especialidade;
 
 	public Long getId() {
@@ -51,4 +56,12 @@ public class Medico {
 
 	public Medico() {
 	}
+
+	public MedicoDto converterMedico(MedicoDto medicoDto) {
+		this.nome = medicoDto.getNome();
+		this.especialidade = medicoDto.getEspecialidade();
+		this.registro = medicoDto.getRegistro();
+		return medicoDto;
+	}
+
 }

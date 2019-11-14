@@ -52,9 +52,10 @@ public class ConsultaService {
 
 	public Consulta atualizarParcialConsulta(Long id, @Valid Consulta consultaAtualizada) throws NotFoundException{
 		Consulta consulta = consultaRepository.findById(id).orElseThrow(() -> new NotFoundException(mensagemNotFound));
-		consulta.setMedico(consultaAtualizada.getMedico());
-		consulta.setReceita(consultaAtualizada.getReceita());
-		consulta.setDescricao(consultaAtualizada.getDescricao());
+		if(consultaAtualizada.getMedico() == null) {}else {consulta.setMedico(consultaAtualizada.getMedico());};
+		if(consultaAtualizada.getReceita() == null) {}else {consulta.setReceita(consultaAtualizada.getReceita());};
+		if(consultaAtualizada.getDescricao() == null) {}else {consulta.setDescricao(consultaAtualizada.getDescricao());};
+	
 		return consulta;
 	}
 

@@ -2,7 +2,6 @@ package br.com.paulomoreira.consult.service;
 
 import java.util.List;
 
-import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

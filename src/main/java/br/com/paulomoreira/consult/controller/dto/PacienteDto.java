@@ -9,7 +9,6 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import br.com.paulomoreira.consult.models.Consulta;
 import br.com.paulomoreira.consult.models.Paciente;
-import br.com.paulomoreira.consult.repository.PacienteRepository;
 
 public class PacienteDto{
 	

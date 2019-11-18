@@ -37,40 +37,41 @@ public class ConsultaController {
 
 	@PostMapping("/{id}/consulta")
 	public ResponseEntity<Resposta<ConsultaDto>> cadastrarConsulta(@PathVariable Long id,
-			@RequestBody @Valid ConsultaDto consultaDto) throws NotFoundException{
+			@RequestBody @Valid ConsultaDto consultaDto) throws NotFoundException {
 		consultaService.cadastrarConsulta(consultaDto, id);
 		resposta.setStatusCode(HttpStatus.CREATED).setMensagem("Consulta adicionada com sucesso.")
-		.setResultado(consultaDto);
+				.setResultado(consultaDto);
 		return ResponseEntity.created(null).body(resposta);
 	}
-	
+
 	@GetMapping("/{id}/consulta")
 	public ResponseEntity<Resposta<List<Consulta>>> detalharPaciente(@PathVariable Long id) throws NotFoundException {
 		Resposta<List<Consulta>> resposta = new Resposta<>();
 		List<Consulta> consultas = consultaService.detalharConsultasPorPaciente(id);
-			resposta.setStatusCode(HttpStatus.OK).setMensagem("Consulta realizada com sucesso!")
-					.setResultado(consultas);
-			return ResponseEntity.ok(resposta);
-		}
+		resposta.setStatusCode(HttpStatus.OK).setMensagem("Consulta realizada com sucesso!").setResultado(consultas);
+		return ResponseEntity.ok(resposta);
+	}
+
 	@GetMapping("/consulta")
-	public ResponseEntity<Resposta<Page<ConsultaDto>>> detalharConsulta(Pageable paginacao){
+	public ResponseEntity<Resposta<Page<ConsultaDto>>> detalharConsulta(Pageable paginacao) {
 		Page<ConsultaDto> consultaDto = consultaService.detalharTodasConsultas(paginacao);
 		Resposta<Page<ConsultaDto>> resposta = new Resposta<>();
 		resposta.setStatusCode(HttpStatus.OK).setMensagem("Consulta realizada com sucesso!").setResultado(consultaDto);
 		return ResponseEntity.ok(resposta);
-		
+
 	}
-	
+
 	@PutMapping("/consulta/{id}")
 	@Transactional
 	public ResponseEntity<Resposta<Consulta>> atualizarConsulta(@PathVariable Long id,
 			@RequestBody @Valid Consulta consultaAtualizada) throws NotFoundException {
 		Resposta<Consulta> resposta = new Resposta<>();
 		try {
-		Consulta consulta = consultaService.atualizarConsulta(id, consultaAtualizada);
-		resposta.setStatusCode(HttpStatus.OK).setMensagem("Consulta atualizada com sucesso.").setResultado(consulta);
-		return ResponseEntity.ok(resposta);
-		}catch (NullPointerException e) {
+			Consulta consulta = consultaService.atualizarConsulta(id, consultaAtualizada);
+			resposta.setStatusCode(HttpStatus.OK).setMensagem("Consulta atualizada com sucesso.")
+					.setResultado(consulta);
+			return ResponseEntity.ok(resposta);
+		} catch (NullPointerException e) {
 			throw new NullPointerException("O Id pesquisado não foi encontrado.");
 		}
 	}
@@ -80,11 +81,12 @@ public class ConsultaController {
 	public ResponseEntity<Resposta<Consulta>> atualizarParcialConsulta(@PathVariable Long id,
 			@RequestBody @Valid Consulta consultaAtualizada) throws NotFoundException {
 		try {
-		Resposta<Consulta> resposta = new Resposta<>();
-		Consulta consulta = consultaService.atualizarParcialConsulta(id, consultaAtualizada);
-		resposta.setStatusCode(HttpStatus.OK).setResultado(consulta).setMensagem("Consulta atualizada com sucesso.");
-		return ResponseEntity.ok(resposta);
-		}catch (NullPointerException e) {
+			Resposta<Consulta> resposta = new Resposta<>();
+			Consulta consulta = consultaService.atualizarParcialConsulta(id, consultaAtualizada);
+			resposta.setStatusCode(HttpStatus.OK).setResultado(consulta)
+					.setMensagem("Consulta atualizada com sucesso.");
+			return ResponseEntity.ok(resposta);
+		} catch (NullPointerException e) {
 			throw new NullPointerException("O Id pesquisado não foi encontrado.");
 		}
 	}
@@ -92,10 +94,10 @@ public class ConsultaController {
 	@DeleteMapping("/consulta/{id}")
 	public ResponseEntity<String> deletarConsulta(@PathVariable Long id) {
 		try {
-		String mensagem = consultaService.deletarConsulta(id);
-		return ResponseEntity.ok(mensagem);
-		}catch (EmptyResultDataAccessException e) {
-			throw new EmptyResultDataAccessException("O Id pesquisado não foi encontrado.",0);
+			String mensagem = consultaService.deletarConsulta(id);
+			return ResponseEntity.ok(mensagem);
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("O Id pesquisado não foi encontrado.", 0);
 		}
 	}
 }

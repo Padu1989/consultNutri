@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -49,7 +50,7 @@ public class MedicoController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<Resposta<Page<MedicoDto>>> buscarMedicos(Pageable paginacao){
+	public ResponseEntity<Resposta<Page<MedicoDto>>> buscarMedicos(Pageable paginacao) throws PropertyReferenceException{
 		Page<MedicoDto> medicoDto = medicoService.buscarMedicos(paginacao);
 		Resposta<Page<MedicoDto>> resposta = new Resposta<>();
 		resposta.setStatusCode(HttpStatus.OK).setMensagem("Lista de médico detalhada com sucesso.").setResultado(medicoDto);

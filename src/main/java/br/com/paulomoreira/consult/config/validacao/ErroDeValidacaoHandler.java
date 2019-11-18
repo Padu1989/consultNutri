@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -38,6 +39,15 @@ public class ErroDeValidacaoHandler {
 	
 	@ExceptionHandler(NotFoundException.class)
 	public ResponseEntity<Resposta<Object>> vai(NotFoundException ex) {
+		Resposta<Object> resposta = new Resposta<>();
+		HttpStatus notFound = HttpStatus.resolve(404);
+		resposta.setStatusCode(notFound).setMensagem(ex.getMessage()).setResultado(ex.getCause());
+		return ResponseEntity.status(notFound).body(resposta);
+		
+	}
+	
+	@ExceptionHandler(PropertyReferenceException.class)
+	public ResponseEntity<Resposta<Object>> vai(PropertyReferenceException ex) {
 		Resposta<Object> resposta = new Resposta<>();
 		HttpStatus notFound = HttpStatus.resolve(404);
 		resposta.setStatusCode(notFound).setMensagem(ex.getMessage()).setResultado(ex.getCause());

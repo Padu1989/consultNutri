@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,7 @@ public class MedicoService {
 
 	@Autowired
 	MedicoRepository medicoRepository;
-	
+
 	private static String mensagem = "Id not found";
 
 	public MedicoDto cadastrarMedico(MedicoDto medicoDto) {
@@ -32,14 +34,21 @@ public class MedicoService {
 	public ResponseEntity<List<Medico>> buscarMedicos() {
 		return ResponseEntity.ok(medicoRepository.findAll());
 	}
-	
-	public MedicoDto detalharMedico(Long id) throws NotFoundException{
+
+	public MedicoDto detalharMedico(Long id) throws NotFoundException {
 		Medico medico = medicoRepository.findById(id).orElseThrow(() -> new NotFoundException(mensagem));
 		MedicoDto medicoDto = new MedicoDto();
 		medicoDto.converterMedico(medico);
+		medicoDto.setId(id);
+		return medicoDto;
+	}	
+	
+	public Page<MedicoDto> buscarMedicos(Pageable paginacao) {
+		Page <Medico> medicos = medicoRepository.findAll(paginacao);
+		Page<MedicoDto> medicoDto = MedicoDto.converter(medicos);
 		return medicoDto;
 	}
-
+	
 	public MedicoDto deletarMedico(Long id) throws NotFoundException {
 		Medico medico = medicoRepository.findById(id).orElseThrow(() -> new NotFoundException(mensagem));
 		MedicoDto medicoDto = new MedicoDto();
@@ -52,19 +61,35 @@ public class MedicoService {
 		Medico medico = medicoRepository.findById(id).orElseThrow(() -> new NotFoundException(mensagem));
 		MedicoDto medicoDto = medico.converterMedico(medicoAtualizado);
 		medicoDto.setId(id);
-		
+
 		return medicoDto;
 	}
 
-	public MedicoDto atualizarParcialMedico(Long id, @Valid MedicoDto medicoParcialAtualizado) throws NotFoundException {
+	public MedicoDto atualizarParcialMedico(Long id, @Valid MedicoDto medicoParcialAtualizado)
+			throws NotFoundException {
 		Medico medico = medicoRepository.findById(id).orElseThrow(() -> new NotFoundException(mensagem));
-		if (medicoParcialAtualizado.getNome() == null) {} else {medico.setNome(medicoParcialAtualizado.getNome());};
-		if (medicoParcialAtualizado.getEspecialidade() == null) {} else {medico.setEspecialidade(medicoParcialAtualizado.getEspecialidade());};
-		if (medicoParcialAtualizado.getRegistro() == null) {} else {medico.setRegistro(medicoParcialAtualizado.getRegistro());};
+		if (medicoParcialAtualizado.getNome() == null) {
+		} else {
+			medico.setNome(medicoParcialAtualizado.getNome());
+		}
+		;
+		if (medicoParcialAtualizado.getEspecialidade() == null) {
+		} else {
+			medico.setEspecialidade(medicoParcialAtualizado.getEspecialidade());
+		}
+		;
+		if (medicoParcialAtualizado.getRegistro() == null) {
+		} else {
+			medico.setRegistro(medicoParcialAtualizado.getRegistro());
+		}
+		;
 		MedicoDto medicoDto = new MedicoDto();
 		medicoDto.setId(id);
 		medicoDto.converterMedico(medico);
 		return medicoDto;
-		
+
 	}
-	}
+
+
+
+}

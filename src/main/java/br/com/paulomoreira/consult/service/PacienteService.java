@@ -1,8 +1,8 @@
 package br.com.paulomoreira.consult.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +28,9 @@ public class PacienteService {
 
 	}
 
-	public List<Paciente> buscarPacientes() {
-		return pacienteRepository.findAll();
+	public Page<Paciente> buscarPacientes(Pageable paginacao) {
+		Page<Paciente> paciente = pacienteRepository.findAll(paginacao);
+		return paciente;
 	}
 
 	public Paciente detalharPaciente(Long id) throws NotFoundException {

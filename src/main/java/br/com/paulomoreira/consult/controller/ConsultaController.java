@@ -7,6 +7,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,11 +33,11 @@ public class ConsultaController {
 
 	@Autowired
 	ConsultaService consultaService;
+	Resposta<ConsultaDto> resposta = new Resposta<>();
 
 	@PostMapping("/{id}/consulta")
 	public ResponseEntity<Resposta<ConsultaDto>> cadastrarConsulta(@PathVariable Long id,
 			@RequestBody @Valid ConsultaDto consultaDto) throws NotFoundException{
-		Resposta<ConsultaDto> resposta = new Resposta<>();
 		consultaService.cadastrarConsulta(consultaDto, id);
 		resposta.setStatusCode(HttpStatus.CREATED).setMensagem("Consulta adicionada com sucesso.")
 		.setResultado(consultaDto);
@@ -50,6 +52,14 @@ public class ConsultaController {
 					.setResultado(consultas);
 			return ResponseEntity.ok(resposta);
 		}
+	@GetMapping("/consulta")
+	public ResponseEntity<Resposta<Page<ConsultaDto>>> detalharConsulta(Pageable paginacao){
+		Page<ConsultaDto> consultaDto = consultaService.detalharTodasConsultas(paginacao);
+		Resposta<Page<ConsultaDto>> resposta = new Resposta<>();
+		resposta.setStatusCode(HttpStatus.OK).setMensagem("Consulta realizada com sucesso!").setResultado(consultaDto);
+		return ResponseEntity.ok(resposta);
+		
+	}
 	
 	@PutMapping("/consulta/{id}")
 	@Transactional

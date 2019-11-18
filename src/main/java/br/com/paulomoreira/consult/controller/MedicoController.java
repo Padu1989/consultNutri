@@ -4,6 +4,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,9 +42,17 @@ public class MedicoController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Resposta<MedicoDto>> detalharMedico(@PathVariable Long id) throws NotFoundException {
+	public ResponseEntity<Resposta<MedicoDto>> buscarMedico(@PathVariable Long id) throws NotFoundException {
 		MedicoDto medicoDto = medicoService.detalharMedico(id);
 		resposta.setMensagem("Médico detalhado com sucesso.").setStatusCode(HttpStatus.OK).setResultado(medicoDto);
+		return ResponseEntity.ok(resposta);
+	}
+	
+	@GetMapping
+	public ResponseEntity<Resposta<Page<MedicoDto>>> buscarMedicos(Pageable paginacao){
+		Page<MedicoDto> medicoDto = medicoService.buscarMedicos(paginacao);
+		Resposta<Page<MedicoDto>> resposta = new Resposta<>();
+		resposta.setStatusCode(HttpStatus.OK).setMensagem("Lista de médico detalhada com sucesso.").setResultado(medicoDto);
 		return ResponseEntity.ok(resposta);
 	}
 

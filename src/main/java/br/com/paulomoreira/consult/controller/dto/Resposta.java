@@ -24,6 +24,10 @@ public class Resposta<T> implements Serializable {
 	public HttpStatus getStatusCode() {
 		return statusCode;
 	}
+	
+	public static <T> Resposta<T> getInstance(){
+		return new Resposta<T>();
+	}
 
 	public Resposta<T> setStatusCode(HttpStatus statusCode) {
 		this.statusCode = statusCode;
@@ -46,7 +50,6 @@ public class Resposta<T> implements Serializable {
 	public Resposta<T> setResultado(T resultado) {
 		this.resultado = resultado;
 		return this;
-		
 	}
 
 	public void setResultado(String mensagem) {

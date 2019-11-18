@@ -2,6 +2,8 @@ package br.com.paulomoreira.consult.controller.dto;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.domain.Page;
+
 import br.com.paulomoreira.consult.models.Consulta;
 import br.com.paulomoreira.consult.models.Medico;
 
@@ -15,6 +17,18 @@ public class ConsultaDto {
 	private String receita;
 	private String descricao;
 	
+	public ConsultaDto() {
+	}
+	
+	public ConsultaDto(Consulta consulta) {
+		this.id = consulta.getId();
+		this.dataConsulta = consulta.getDataConsulta();
+		this.nomePaciente = consulta.getPaciente().getNome();
+		this.cpfPaciente = consulta.getPaciente().getCpf();
+		this.medico = consulta.getMedico();
+		this.receita = consulta.getReceita();
+		this.descricao = consulta.getDescricao();
+	}
 	
 	public Long getId() {
 		return id;
@@ -65,6 +79,11 @@ public class ConsultaDto {
 	}
 	public Consulta converterConsulta(ConsultaDto consultaDto) {
 		return new Consulta(id, nomePaciente, cpfPaciente, medico, receita, descricao, dataConsulta);
+	}
+	public static Page<ConsultaDto> converter(Page<Consulta> consultas) {
+		
+		return consultas.map(ConsultaDto::new);
+		
 	}
 	
 	

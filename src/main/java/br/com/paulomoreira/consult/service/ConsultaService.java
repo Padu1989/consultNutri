@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.paulomoreira.consult.controller.dto.ConsultaDto;
@@ -63,5 +65,12 @@ public class ConsultaService {
 		consultaRepository.deleteById(id);
 		String mensagem = "Consulta " + id + " deletada com sucesso.";
 		return mensagem;
+	}
+
+	public Page<ConsultaDto> detalharTodasConsultas(Pageable paginacao) {
+		Page<Consulta> consulta = consultaRepository.findAll(paginacao);
+		Page<ConsultaDto> consultaDto = ConsultaDto.converter(consulta);
+		return consultaDto;
+		
 	}
 }

@@ -1,0 +1,35 @@
+[33mcommit 45bb63c367e235aa121862e3e16174427c31e12d[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Paulo Moreira <paulomoreira11@outlook.com>
+Date:   Mon Nov 18 17:31:50 2019 -0300
+
+    Adicionado geracao de token via JWT
+
+[33mcommit 62a41d60c6533f53b9a79f98c0c2886549ae517c[m
+Author: Paulo Moreira <paulomoreira11@outlook.com>
+Date:   Mon Nov 18 12:37:46 2019 -0300
+
+    Incremento de paginacao e ordenacao nas classes Consulta, Medico, Paciente
+
+[33mcommit 195f496077dd81a408fb85b8448e8a4a844842bb[m
+Author: Paulo Moreira <paulomoreira11@outlook.com>
+Date:   Thu Nov 14 17:46:54 2019 -0300
+
+    Inclusão de documentação Swagger, e alterações nos retornos dos erros
+
+[33mcommit 94daaa18bbb97c304397cc763a5a575dc1804942[m
+Author: Paulo Moreira <paulomoreira11@outlook.com>
+Date:   Wed Nov 13 15:15:56 2019 -0300
+
+    Alteração no NotFoundException  do Paciente e da Consulta
+
+[33mcommit bf31bc43003c25901364d61f10b4c9329a42551c[m
+Author: Paulo Moreira <paulomoreira11@outlook.com>
+Date:   Wed Nov 13 14:41:49 2019 -0300
+
+    Alteração nas exceptions metodo FindBy
+
+[33mcommit 8e948bbd4b0a6ef5ac9bba7f3cfaf5bfdfb6665c[m
+Author: Paulo Moreira <paulomoreira11@outlook.com>
+Date:   Wed Nov 13 11:57:32 2019 -0300
+
+    Adicionado tratamento de erro para o Consulta Controller
